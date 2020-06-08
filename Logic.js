@@ -12,6 +12,7 @@ export class Logic {
         this.canvas.height = window.innerHeight
         
         this.nodes = []
+        this.radius = 300
 
         this.update = this.update.bind(this)
         
@@ -22,8 +23,14 @@ export class Logic {
     }
 
     makeGraph() {
-        for(let x = 0; x < 8; x++) {
-            this.nodes.push(new Node(this.ctx, 100*x, 100))
+        let x = this.canvas.width/2
+        let y = this.canvas.height/2
+        let angle = 360/8
+        for(let i = 1; i <= 8; i++) {
+            let nX = x + this.radius * Math.cos((angle*i)*Math.PI/180)
+            let nY = y + this.radius * Math.sin((angle*i)*Math.PI/180)
+            this.nodes.push(new Node(this.ctx, nX, nY))
+            console.log(`x: ${Math.floor(nX)} y: ${Math.floor(nY)} angle: ${angle*i}`)
         }
     }
 
