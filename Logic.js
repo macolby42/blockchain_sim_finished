@@ -29,9 +29,13 @@ export class Logic {
         for(let i = 1; i <= 8; i++) {
             let nX = x + this.radius * Math.cos((angle*i)*Math.PI/180)
             let nY = y + this.radius * Math.sin((angle*i)*Math.PI/180)
-            this.nodes.push(new Node(this.ctx, nX, nY))
-            console.log(`x: ${Math.floor(nX)} y: ${Math.floor(nY)} angle: ${angle*i}`)
+            this.nodes.push(new Node(this.ctx, nX, nY, 2))
         }
+        for(let i = 0; i < 8; i++) {
+            this.nodes[i].addConnection(this.nodes[1])
+            this.nodes[i].addConnection(this.nodes[2])
+        }
+        this.nodes[0].setValue(16)
     }
 
     update() {
