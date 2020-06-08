@@ -33,8 +33,10 @@ export class Logic {
 
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
             
-            let node = new Node(this.ctx, 200, 200)
-            node.draw()
+            this.nodes.forEach(node => {
+                node.draw()
+                return
+            })
         }
         this.rAF = requestAnimationFrame(this.update);
     }
