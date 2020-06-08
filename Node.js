@@ -7,6 +7,7 @@ export class Node {
         this.connections = []
         this.value = 0
         this.idealValue = ideal
+        this.isSelected = false
     }
 
     draw() {
@@ -55,6 +56,9 @@ export class Node {
         this.ctx.beginPath()
         this.ctx.rect(this.x, this.y, this.size, this.size)
         this.ctx.fill()
+        if (this.isSelected) {
+            this.ctx.stroke()
+        }
     }
 
     drawConnection(connection) {
@@ -66,5 +70,22 @@ export class Node {
 
     setValue(val) {
         this.value = val
+    }
+
+    deselect() {
+        this.isSelected = false
+    }
+
+    select() {
+        this.isSelected = true
+    }
+
+    wasClicked(x, y) {
+        if(x-this.x < this.size && x-this.x > 0) {
+            if(y-this.y < this.size && y-this.y > 0) {
+                return true
+            }
+        }
+        return false
     }
 }

@@ -15,11 +15,27 @@ export class Logic {
         this.radius = 300
 
         this.update = this.update.bind(this)
+        this.handleClick = this.handleClick.bind(this)
         
         document.body.insertBefore(this.canvas, document.body.childNodes[0])
         
+        window.addEventListener('click', this.handleClick)
+
         this.makeGraph()
         this.rAF = requestAnimationFrame(this.update);
+    }
+
+    handleClick(e) {
+        let x = e.clientX
+        let y = e.clientY
+        this.nodes.forEach(node => {
+            if (node.wasClicked(x, y)) {
+                let selected = this.nodes.filter(n => n.isSelected)
+                let toDeselect = selected[0] ? selected[0] : null
+                if (toDeselect) toDeselect.deselect()
+                node.select()
+            }
+        })
     }
 
     makeGraph() {
