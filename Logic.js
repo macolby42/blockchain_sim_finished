@@ -104,14 +104,14 @@ export class Logic {
                 node.draw()
 
             })
-            if (!playerWon) {
+            if (playerWon) {
                 this.ctx.fillStyle = 'black'
                 this.ctx.font = "90px Arial"
                 this.ctx.fillText("You Won!", this.canvas.width*.41, this.canvas.height*.1)
             }
             this.ctx.fillStyle = 'black'
             this.ctx.font = "30px Arial"
-            this.ctx.fillText("Left Click to select a node. Right Click on a node to transfer value from the selected node.", this.canvas.width*.18, this.canvas.height*.95)
+            this.ctx.fillText("Left Click to select a node. Right Click on a node to transfer value from the selected node. Try to turn all of the nodes green.", this.canvas.width*.01, this.canvas.height*.95)
         }
         this.rAF = requestAnimationFrame(this.update);
     }
