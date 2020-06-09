@@ -71,6 +71,11 @@ export class Node {
     setValue(val) {
         this.value = val
     }
+    
+    incrementValue() {
+        this.value += 1
+        console.log(this.value)
+    }
 
     deselect() {
         this.isSelected = false

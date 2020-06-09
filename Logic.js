@@ -5,8 +5,12 @@ export class Logic {
         this.lastUpdate = performance.now()
 
         this.updateRate = 32
+
+        this.update = this.update.bind(this)
+        this.handleClick = this.handleClick.bind(this)
         
         this.canvas = document.createElement('canvas')
+        this.canvas.addEventListener('contextmenu', this.handleClick)
         this.ctx = this.canvas.getContext('2d')
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight
@@ -14,8 +18,6 @@ export class Logic {
         this.nodes = []
         this.radius = 300
 
-        this.update = this.update.bind(this)
-        this.handleClick = this.handleClick.bind(this)
         
         document.body.insertBefore(this.canvas, document.body.childNodes[0])
         
@@ -26,16 +28,29 @@ export class Logic {
     }
 
     handleClick(e) {
+        e.preventDefault()
+
         let x = e.clientX
         let y = e.clientY
-        this.nodes.forEach(node => {
-            if (node.wasClicked(x, y)) {
-                let selected = this.nodes.filter(n => n.isSelected)
-                let toDeselect = selected[0] ? selected[0] : null
-                if (toDeselect) toDeselect.deselect()
-                node.select()
-            }
-        })
+
+        if (e.button === 0) {
+            this.nodes.forEach(node => {
+                if (node.wasClicked(x, y)) {
+                    let selected = this.nodes.filter(n => n.isSelected)
+                    let toDeselect = selected[0] ? selected[0] : null
+                    if (toDeselect) toDeselect.deselect()
+                    node.select()
+                }
+            })
+        }
+        else if (e.button === 2) {
+            this.nodes.forEach(node => {
+                if (node.wasClicked(x, y)) {
+                    console.log('r click!')
+                    node.incrementValue()
+                }
+            })
+        }
     }
 
     makeGraph() {
