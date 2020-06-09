@@ -18,6 +18,7 @@ export class Logic {
         this.nodes = []
         this.radius = 300
 
+        this.selectedNode = null
         
         document.body.insertBefore(this.canvas, document.body.childNodes[0])
         
@@ -40,14 +41,17 @@ export class Logic {
                     let toDeselect = selected[0] ? selected[0] : null
                     if (toDeselect) toDeselect.deselect()
                     node.select()
+                    this.selectedNode = node
                 }
             })
         }
         else if (e.button === 2) {
             this.nodes.forEach(node => {
                 if (node.wasClicked(x, y)) {
-                    console.log('r click!')
-                    node.incrementValue()
+                    if (this.selectedNode.getValue() > 0 && this.selectedNode.isConnection(node)) {
+                        node.incrementValue()
+                        this.selectedNode.decrementValue()
+                    }
                 }
             })
         }
@@ -60,12 +64,36 @@ export class Logic {
         for(let i = 1; i <= 8; i++) {
             let nX = x + this.radius * Math.cos((angle*i)*Math.PI/180)
             let nY = y + this.radius * Math.sin((angle*i)*Math.PI/180)
-            this.nodes.push(new Node(this.ctx, nX, nY, 2))
+            this.nodes.push(new Node(i, this.ctx, nX, nY, 2))
         }
-        for(let i = 0; i < 8; i++) {
-            this.nodes[i].addConnection(this.nodes[1])
-            this.nodes[i].addConnection(this.nodes[2])
-        }
+
+        this.nodes[0].addConnection(this.nodes[1])
+        this.nodes[1].addConnection(this.nodes[0])
+        this.nodes[0].addConnection(this.nodes[4])
+        this.nodes[4].addConnection(this.nodes[0])
+        this.nodes[0].addConnection(this.nodes[5])
+        this.nodes[5].addConnection(this.nodes[0])
+        
+        this.nodes[1].addConnection(this.nodes[5])
+        this.nodes[5].addConnection(this.nodes[1])
+        
+        this.nodes[2].addConnection(this.nodes[6])
+        this.nodes[6].addConnection(this.nodes[2])
+        
+        this.nodes[3].addConnection(this.nodes[4])
+        this.nodes[4].addConnection(this.nodes[3])
+        this.nodes[3].addConnection(this.nodes[6])
+        this.nodes[6].addConnection(this.nodes[3])
+        this.nodes[3].addConnection(this.nodes[7])
+        this.nodes[7].addConnection(this.nodes[4])
+        
+
+        // for(let i = 0; i < 7; i++) {
+        //     this.nodes[i].addConnection(this.nodes[i%8])
+        //     // this.nodes[1].addConnection(this.nodes[i])
+        //     // this.nodes[i].addConnection(this.nodes[2])
+        //     // this.nodes[2].addConnection(this.nodes[i])
+        // }
         this.nodes[0].setValue(16)
     }
 

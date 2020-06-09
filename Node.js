@@ -1,5 +1,6 @@
 export class Node {
-    constructor(ctx, x, y, ideal) {
+    constructor(id, ctx, x, y, ideal) {
+        this.id = id
         this.ctx = ctx
         this.x = x
         this.y = y
@@ -17,6 +18,9 @@ export class Node {
         this.drawNode()
     }
 
+    getId() {
+        return this.id
+    }
     
     getX() {
         return this.x
@@ -45,13 +49,20 @@ export class Node {
     }
     
     addConnection(connection) {
-        this.connections.push({
-            x: connection.getX(),
-            y: connection.getY(),
-        })
+        this.connections.push(connection)
+    }
+
+    isConnection(node) {
+        return this.connections.filter(c => c.getId() === node.getId()).length === 1
     }
     
     drawNode() {
+        // Uncomment this if you want it to be a little easier and display the node values for the player
+        // this.ctx.fillStyle = 'black'
+        // this.ctx.beginPath()
+        // this.ctx.font = "30px Arial";
+        // this.ctx.fillText(this.value, this.x, this.y-2);
+        
         this.setFill()
         this.ctx.beginPath()
         this.ctx.rect(this.x, this.y, this.size, this.size)
@@ -64,8 +75,12 @@ export class Node {
     drawConnection(connection) {
         this.ctx.beginPath()
         this.ctx.moveTo(this.x+(this.size/2), this.y+(this.size/2))
-        this.ctx.lineTo(connection.x+(this.size/2), connection.y+(this.size/2))
+        this.ctx.lineTo(connection.getX()+(this.size/2), connection.getY()+(this.size/2))
         this.ctx.stroke()
+    }
+
+    getValue() {
+        return this.value
     }
 
     setValue(val) {
@@ -74,6 +89,11 @@ export class Node {
     
     incrementValue() {
         this.value += 1
+        console.log(this.value)
+    }
+
+    decrementValue() {
+        this.value -= 1
         console.log(this.value)
     }
 
