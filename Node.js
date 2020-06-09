@@ -60,9 +60,9 @@ export class Node {
         // Uncomment this if you want it to be a little easier and display the node values for the player
         // this.ctx.fillStyle = 'black'
         // this.ctx.beginPath()
-        // this.ctx.font = "30px Arial";
-        // this.ctx.fillText(this.value, this.x, this.y-2);
-        
+        // this.ctx.font = "30px Arial"
+        // this.ctx.fillText(this.value, this.x, this.y-2)
+
         this.setFill()
         this.ctx.beginPath()
         this.ctx.rect(this.x, this.y, this.size, this.size)
@@ -85,6 +85,10 @@ export class Node {
 
     setValue(val) {
         this.value = val
+    }
+
+    isSatisfied() {
+        return this.value/this.idealValue === 1
     }
     
     incrementValue() {

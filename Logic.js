@@ -87,26 +87,31 @@ export class Logic {
         this.nodes[3].addConnection(this.nodes[7])
         this.nodes[7].addConnection(this.nodes[4])
         
-
-        // for(let i = 0; i < 7; i++) {
-        //     this.nodes[i].addConnection(this.nodes[i%8])
-        //     // this.nodes[1].addConnection(this.nodes[i])
-        //     // this.nodes[i].addConnection(this.nodes[2])
-        //     // this.nodes[2].addConnection(this.nodes[i])
-        // }
         this.nodes[0].setValue(16)
     }
 
     update() {
+        let playerWon = true
         if (this.lastUpdate < performance.now() - this.updateRate) {
             this.lastUpdate = performance.now()
 
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
             
             this.nodes.forEach(node => {
+                if (playerWon) {
+                    playerWon = node.isSatisfied()
+                }
                 node.draw()
-                return
+
             })
+            if (!playerWon) {
+                this.ctx.fillStyle = 'black'
+                this.ctx.font = "90px Arial"
+                this.ctx.fillText("You Won!", this.canvas.width*.41, this.canvas.height*.1)
+            }
+            this.ctx.fillStyle = 'black'
+            this.ctx.font = "30px Arial"
+            this.ctx.fillText("Left Click to select a node. Right Click on a node to transfer value from the selected node.", this.canvas.width*.18, this.canvas.height*.95)
         }
         this.rAF = requestAnimationFrame(this.update);
     }
